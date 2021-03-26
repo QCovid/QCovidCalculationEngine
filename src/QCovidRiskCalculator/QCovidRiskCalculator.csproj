@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Authors>University of Oxford</Authors>
+    <Company>University of Oxford</Company>
+    <Product>QCovid</Product>
+    <Copyright>2020 University of Oxford</Copyright>
+    <RootNamespace>QCovid.RiskCalculator</RootNamespace>
+    <Version>1.1.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>QCovidRiskCalculator.xml</DocumentationFile>
+  </PropertyGroup>
+ 
+  <ItemGroup>
+    <None Remove="errorcodes.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="errorcodes.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

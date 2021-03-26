@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QCovidRiskCalculator", "QCovidRiskCalculator\QCovidRiskCalculator.csproj", "{38DB71BC-8D99-4797-BF92-0EBDC732BC9C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D89DA74F-E39F-408A-9863-F9CE98AC3323}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QCovidRiskCalculatorTests", "QCovidRiskCalculatorTests\QCovidRiskCalculatorTests.csproj", "{5420464D-7169-4A9E-AFAD-E5350A213140}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38DB71BC-8D99-4797-BF92-0EBDC732BC9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38DB71BC-8D99-4797-BF92-0EBDC732BC9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38DB71BC-8D99-4797-BF92-0EBDC732BC9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38DB71BC-8D99-4797-BF92-0EBDC732BC9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5420464D-7169-4A9E-AFAD-E5350A213140}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5420464D-7169-4A9E-AFAD-E5350A213140}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5420464D-7169-4A9E-AFAD-E5350A213140}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5420464D-7169-4A9E-AFAD-E5350A213140}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5420464D-7169-4A9E-AFAD-E5350A213140} = {D89DA74F-E39F-408A-9863-F9CE98AC3323}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {153ACD54-F1BF-4D01-893D-56B0694B4709}
+	EndGlobalSection
+EndGlobal

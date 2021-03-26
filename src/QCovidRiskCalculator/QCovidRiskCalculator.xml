@@ -1,0 +1,1894 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QCovidRiskCalculator</name>
+    </assembly>
+    <members>
+        <member name="T:QCovid.RiskCalculator.BodyMassIndex.Bmi">
+            <summary>
+            Body Mass Index
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.BodyMassIndex.Bmi.BodyMassIndex">
+            <summary>
+            The body mass index (mass or weight in kilograms divided by the square of height in metres)
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.BodyMassIndex.Bmi.ErrorCode">
+            <summary>
+            An error code from generating the BodyMassIndex
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.BodyMassIndex.Bmi.Default">
+            <summary>
+            Get the default instance of the Bmi class, representing no bmi value provided.
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.BodyMassIndex.Bmi.CreateFromBmi(System.Double)">
+            <summary>
+            Create an instance of the bmi class from a bmi value
+            </summary>
+            <param name="bmi"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.BodyMassIndex.Bmi.CreateFromKgAndCm(System.Double,System.Double)">
+            <summary>
+            Create an instance of the bmi class from a weight in kg and a height in centimetres
+            </summary>
+            <param name="weightKg"></param>
+            <param name="heightCentimetres"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QCovid.RiskCalculator.CodeMapping.CodeType">
+            <summary>
+            A class-based "enum" for types of medical codes, e.g. Read2
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.CodeMapping.CodeType.Snomed">
+            <summary>
+            SNOMED codes
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.CodeMapping.CodeType.Read2">
+            <summary>
+            Read version 2 (5-byte Read) codes
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.CodeMapping.CodeType.Opcs">
+            <summary>
+            Codes from the OPCS Classification of Interventions and Procedures
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.CodeMapping.CodeType.Icd10">
+            <summary>
+            Codes from the International Classification of Diseases, 10th revision
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.CodeMapping.CodeType.DmPlusD">
+            <summary>
+            Codes from the Dictionary of medicines and devices
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.CodeMapping.CodeType.ChemotherapyTreatmentBenchmarkGroup">
+            <summary>
+            A custom list of drugs and treatments mapping to a Chemotherapy Group
+            See Sheet 3b of the QCovid-YYYY-RX-Inputs.xlsx file
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.CodeMapping.CodeType.Value">
+            <summary>
+            The enum value of a code type
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.CodeMapping.CodeType.Name">
+            <summary>
+            The human-readable name of a code type
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.CodeMapping.CodeType.GetAllTypes">
+            <summary>
+            Get a list of all available code types
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.CodeMapping.CodeType.GetByValue(System.Int32)">
+            <summary>
+            Get the CodeType represented by a specified value
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QCovid.RiskCalculator.CodeMapping.IMedicalCodesToRiskInputConverter">
+            <summary>
+            Converts a list of medical codes into a format that <see cref="T:QCovid.RiskCalculator.Risk.IQCovidRiskCalculator"/> understands.
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.CodeMapping.IMedicalCodesToRiskInputConverter.CreateRiskInputFromMedicalCodes(QCovid.RiskCalculator.Risk.Input.Date,System.Collections.Generic.IEnumerable{QCovid.RiskCalculator.CodeMapping.MedicalCodeInstance},QCovid.RiskCalculator.Risk.Input.Age,QCovid.RiskCalculator.Risk.Input.Sex,QCovid.RiskCalculator.Townsend.EncryptedTownsendScore,QCovid.RiskCalculator.BodyMassIndex.Bmi)">
+            <summary>
+            Create a <see cref="T:QCovid.RiskCalculator.Risk.Input.RiskInput"/> from a list of medical codes and some additional settings.
+            </summary>
+            <param name="processingReferenceTime"></param>
+            <param name="codes"></param>
+            <param name="age"></param>
+            <param name="sex"></param>
+            <param name="townsendScore"></param>
+            <param name="bmi"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QCovid.RiskCalculator.CodeMapping.MedicalCodeInstance">
+            <summary>
+            A code representing something about a patient at a specified date,
+            e.g. a medical condition, prior treatment or drug prescription
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.CodeMapping.MedicalCodeInstance.CodeType">
+            <summary>
+            The code type, e.g. SNOMED or Read2
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.CodeMapping.MedicalCodeInstance.Code">
+            <summary>
+            The code itself
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.CodeMapping.MedicalCodeInstance.Date">
+            <summary>
+            The date the code was recorded against the patient
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.CodeMapping.MedicalCodeInstance.#ctor(QCovid.RiskCalculator.CodeMapping.CodeType,System.String,QCovid.RiskCalculator.Risk.Input.Date)">
+            <summary>
+            
+            </summary>
+            <param name="codeType"></param>
+            <param name="code"></param>
+            <param name="date"></param>
+        </member>
+        <member name="T:QCovid.RiskCalculator.CodeMapping.MedicalCodeMappingResult">
+            <summary>
+            The output of <see cref="T:QCovid.RiskCalculator.CodeMapping.IMedicalCodesToRiskInputConverter"/>
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.CodeMapping.MedicalCodeMappingResult.RiskInput">
+            <summary>
+            The Risk Input resulting from the provided medical codes
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.CodeMapping.MedicalCodeMappingResult.RecognisedMedicalCodes">
+            <summary>
+            The list of the medical code instances which were understood by the mapper.
+            This includes medical codes that were outdated, or overridden by others
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.CodeMapping.MedicalCodeMappingResult.UnrecognisedMedicalCodes">
+            <summary>
+            The list of medical code instances which were not understood by the mapper.
+            This includes both medical codes which were malformed and medical codes which were irrelevant
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.CodeMapping.MedicalCodeMappingResult.ErrorCodes">
+            <summary>
+            A list of errors associated with this result.
+            </summary>
+        </member>
+        <member name="T:QCovid.RiskCalculator.CodeMapping.MedicalCodesToRiskInputConverter">
+            <summary>
+            Implements <see cref="T:QCovid.RiskCalculator.CodeMapping.IMedicalCodesToRiskInputConverter"/> by checking the provided codes against the medical codes sql database
+            and performing additional logic to determine which codes are in date and have priority
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.CodeMapping.MedicalCodesToRiskInputConverter.#ctor(System.String,System.Func{System.Data.Common.DbConnection})">
+            <summary>
+            Construct a CodesToInputConverter with a function to create a new database connection.
+            Will close created db connection on dispose.
+            </summary>
+            <param name="licenceKey"></param>
+            <param name="newConnectionFactory"></param>
+            <exception cref="T:QCovid.RiskCalculator.Exceptions.LicenceKeyException"></exception>
+        </member>
+        <member name="M:QCovid.RiskCalculator.CodeMapping.MedicalCodesToRiskInputConverter.#ctor(System.String,System.Data.Common.DbConnection)">
+            <summary>
+            Construct a CodesToInputConverter with a pre-existing database connection.
+            Will not close db connection on dispose.
+            </summary>
+            <param name="licenceKey"></param>
+            <param name="dbConnection"></param>
+            <exception cref="T:QCovid.RiskCalculator.Exceptions.LicenceKeyException"></exception>
+        </member>
+        <member name="M:QCovid.RiskCalculator.CodeMapping.MedicalCodesToRiskInputConverter.CreateRiskInputFromMedicalCodes(QCovid.RiskCalculator.Risk.Input.Date,System.Collections.Generic.IEnumerable{QCovid.RiskCalculator.CodeMapping.MedicalCodeInstance},QCovid.RiskCalculator.Risk.Input.Age,QCovid.RiskCalculator.Risk.Input.Sex,QCovid.RiskCalculator.Townsend.EncryptedTownsendScore,QCovid.RiskCalculator.BodyMassIndex.Bmi)">
+            <inheritdoc />
+        </member>
+        <member name="M:QCovid.RiskCalculator.CodeMapping.MedicalCodesToRiskInputConverter.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Exceptions.LicenceKeyException">
+            <summary>
+            An exception due to an unlicensed or expired release version of the QCovidRiskCalculator library.
+            </summary>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Exceptions.QCovidErrorCode">
+            <summary>
+            A code representing an exception returned by a QCovid operation.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.Code">
+            <summary>
+            A unique id for this error type.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.IsFatal">
+            <summary>
+            Whether the error means no valid result could be returned.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.Message">
+            <summary>
+            A human readable message associated with this error code.
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.UnhandledException">
+            <summary>
+            An unhandled exception occurred
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.AgeBelowMinimumValue">
+            <summary>
+            The provided age in years is below the calculators range
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.AgeAboveMaximumValue">
+            <summary>
+            The provided age in years is above the calculators range
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.BmiBelowMinimumValue">
+            <summary>
+            The provided BMI is below the calculators range. The minimum valid BMI will be used instead
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.BmiAboveMaximumValue">
+            <summary>
+            The provided BMI is above the calculators range. The maximum valid BMI will be used instead
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.BmiNotProvided">
+            <summary>
+            No BMI was provided. A default BMI will be used
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.BmiIsNaN">
+            <summary>
+            The provided BMI was not a number. A default BMI will be used
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.NullInput">
+            <summary>
+            One or more inputs is null
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.PostcodeNotFound">
+            <summary>
+            The provided postcode was not found
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.PostcodeNotProvided">
+            <summary>
+            No postcode was provided
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.CouldNotConnectToTownsendDatabase">
+            <summary>
+            Could not open a connection to the Townsend database
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.CouldNotQueryTownsendDatabase">
+            <summary>
+            An error occurred while querying the Townsend database
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.IncorrectTownsendDatabaseVersion">
+            <summary>
+            The Townsend database did not pass the version check
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.CouldNotConnectToMedicalCodeDatabase">
+            <summary>
+            Could not open a connection to the Medical code database
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.CouldNotQueryMedicalCodeDatabase">
+            <summary>
+            An error occurred while querying the Medical code database
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.IncorrectMedicalCodeDatabaseVersion">
+            <summary>
+            The Medical code database did not pass the version check
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Exceptions.QCovidErrorCode.ToExceptionIfFatal">
+            <summary>
+            For a fatal error code, returns a throw-able exception. Returns null otherwise
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Exceptions.QCovidException">
+            <summary>
+            An <see cref="T:System.Exception"/> thrown by QCovid
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Exceptions.QCovidException.Code">
+            <summary>
+            A code corresponding to a <see cref="T:QCovid.RiskCalculator.Exceptions.QCovidErrorCode"/>
+            </summary>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.Age">
+            <summary>
+            A person's Age
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.Age.Years">
+            <summary>
+            The age in whole years
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Age.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="years"></param>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Age.CreateFromDateOfBirth(QCovid.RiskCalculator.Risk.Input.Date,QCovid.RiskCalculator.Risk.Input.Date)">
+            <summary>
+            Get a users age from their date of birth and a specified current date.
+            </summary>
+            <remarks>
+            Assumes users follow the western idea of age, e.g. not East Asian age reckoning.
+            Assumes users born on February 29 consider their birthday to be March 1 in non-leap years.
+            </remarks>
+            <param name="dateOfBirth"></param>
+            <param name="localNow"></param>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.CancerTreatmentsAndImmunoSuppressants">
+            <summary>
+            Inputs representing various cancer treatments or medication effecting the immune system
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.CancerTreatmentsAndImmunoSuppressants.ChemotherapyGroup">
+            <summary>
+            Have you had chemotherapy in the last 12 months?
+            Chemotherapy prescribed in preceding 12 months as recorded on the Systemic Anti Cancer Treatment (SACT) data.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.CancerTreatmentsAndImmunoSuppressants.RadioTherapyInLast6Months">
+            <summary>
+            Have you had radiotherapy in the last 6 months?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.CancerTreatmentsAndImmunoSuppressants.BoneMarrowTransplantInLast6Months">
+            <summary>
+            Have you had a bone marrow or stem cell transplant in the last 6 months?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.CancerTreatmentsAndImmunoSuppressants.CancerOfBloodOrBoneMarrow">
+            <summary>
+            Have you a cancer of the blood or bone marrow such as leukaemia, myelodysplastic syndromes, lymphoma or myeloma and are at any stage of treatment?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.CancerTreatmentsAndImmunoSuppressants.SolidOrganTransplant">
+            <summary>
+            Have you had a solid organ transplant (lung, liver, stomach, pancreas, spleen, heart or thymus)?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.CancerTreatmentsAndImmunoSuppressants.PrescribedImmunoSuppressants">
+            <summary>
+            Have you been prescribed immunosuppressants prescribed by your GP?
+            Prescribed four or more times in the previous 6 months.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.CancerTreatmentsAndImmunoSuppressants.PrescribedOralSteroids">
+            <summary>
+            Have you been prescribed oral steroids by your GP in the last 6 months?
+            Oral prednisolone containing preparations prescribed four or more times in the previous 6 months.
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.CancerTreatmentsAndImmunoSuppressants.#ctor(QCovid.RiskCalculator.Risk.Input.ChemotherapyGroup,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="chemotherapyGroup"></param>
+            <param name="radioTherapyInLast6Months"></param>
+            <param name="cancerOfBloodOrBoneMarrow"></param>
+            <param name="boneMarrowTransplantInLast6Months"></param>
+            <param name="solidOrganTransplant"></param>
+            <param name="prescribedImmunoSuppressantsInLast6Months"></param>
+            <param name="prescribedOralSteroids"></param>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.ChemotherapyGroup">
+            <summary>
+            An input representing classifications of Chemotherapy treatment
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyGroup.NoneInLast12Months">
+            <summary>
+            No Chemotherapy in the last 12 months
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyGroup.GroupA">
+            <summary>
+            Group A
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyGroup.GroupB">
+            <summary>
+            Group B
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyGroup.GroupC">
+            <summary>
+            Group C
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.ChemotherapyGroup.GetAllOptions">
+            <summary>
+            Get all available Chemotherapy Groups in order of ascending severity
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.ChemotherapyGroup.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem">
+            <summary>
+            An input representing a specific chemotherapy treatment
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.LessThan10Percent">
+            <summary>
+            &lt; 10 %
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.FiveFuSingleAgent">
+            <summary>
+            5FU single agent
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Abiraterone">
+            <summary>
+            Abiraterone
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Anagrelide">
+            <summary>
+            Anagrelide
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.AromataseInhibitors">
+            <summary>
+            Aromatase inhibitors
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.BevacizumabSingleAgent">
+            <summary>
+            Bevacizumab single agent
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Bisphosphonate">
+            <summary>
+            Bisphosphonate
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Busulfan">
+            <summary>
+            Busulfan 
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.CapecitabineSingleAgent">
+            <summary>
+            Capecitabine single agent
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Cdk4Slash6Inhibitors">
+            <summary>
+            CDK4/6 inhibitors
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Cetuximab">
+            <summary>
+            Cetuximab
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.CisplatinBasedRegimens">
+            <summary>
+            Cisplatin based  regimens
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Denosumab">
+            <summary>
+            Denosumab 
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Durvalumab">
+            <summary>
+            Durvalumab
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Enzalutamide">
+            <summary>
+            Enzalutamide
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Fulvestrant">
+            <summary>
+            Fulvestrant
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Hydroxycarbamide">
+            <summary>
+            Hydroxycarbamide
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.InterferonAllFormulations">
+            <summary>
+            Interferon (all formulations)
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Ipilimumab">
+            <summary>
+            Ipilimumab
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Lenvatinib">
+            <summary>
+            Lenvatinib
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Methotrexate">
+            <summary>
+            Methotrexate
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.MitomycinC">
+            <summary>
+            Mitomycin C
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.MtorInhibitors">
+            <summary>
+            mTOR inhibitors
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Nivolumab">
+            <summary>
+            Nivolumab 
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Panitumumab">
+            <summary>
+            Panitumumab
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.ParpInhibitors">
+            <summary>
+            PARP inhibitors
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Pembrolizumab">
+            <summary>
+            Pembrolizumab
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Pemetrexed">
+            <summary>
+            Pemetrexed
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Raltitrexed">
+            <summary>
+            Raltitrexed
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Regorafinib">
+            <summary>
+            Regorafinib
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.SingleAgentAtezolizumab">
+            <summary>
+            Single agent: Atezolizumab
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Sorafenib">
+            <summary>
+            Sorafenib
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Tamoxifen">
+            <summary>
+            Tamoxifen
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.TaxaneWeekly">
+            <summary>
+            Taxane – weekly
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.TyrosineKinaseInhibitorsIncludingAlkAndOrRos" -->
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.TrastuzumabPertuzumab">
+            <summary>
+            Trastuzumab +/- pertuzumab
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.EtoposideBasedRegimens">
+            <summary>
+            Etoposide based regimens
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Cmf">
+            <summary>
+            CMF
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.IrinotecanAndOxaliplatinBasedRegimens">
+            <summary>
+            Irinotecan and Oxaliplatin based regimens
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Cabazitaxel">
+            <summary>
+            Cabazitaxel
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Gemcitabine">
+            <summary>
+            Gemcitabine
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Chorambucil">
+            <summary>
+            Chorambucil
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Temozolomide">
+            <summary>
+            Temozolomide
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Daratumumab">
+            <summary>
+            Daratumumab
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Rituximab">
+            <summary>
+            Rituximab 
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Obinutuzumab">
+            <summary>
+            Obinutuzumab
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Pentostatin">
+            <summary>
+            Pentostatin
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.ProteosomeInhibitors">
+            <summary>
+            Proteosome inhibitors
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Imids">
+            <summary>
+            IMIDs 
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Pi3KinaseInhibitors">
+            <summary>
+            PI3Kinase inhibitors
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.BtkInhibitors">
+            <summary>
+            BTK inhibitors
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.JakInhibitors">
+            <summary>
+            JAK inhibitors
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Ventoclax">
+            <summary>
+            Ventoclax
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.TrastuzumabEmtansine">
+            <summary>
+            Trastuzumab-emtansine
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.AnthracyclineBasedRegimens">
+            <summary>
+            Anthracycline based regimens
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Fec">
+            <summary>
+            FEC
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Mvac">
+            <summary>
+            MVAC
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Abvd">
+            <summary>
+            ABVD
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Chop">
+            <summary>
+            CHOP
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Beacopp">
+            <summary>
+            BEACOPP
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.LiposomalDoxorubicin">
+            <summary>
+            Liposomal doxorubicin 
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Taxane3Weekly">
+            <summary>
+            Taxane – 3 weekly
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.NabPaclitaxel">
+            <summary>
+            Nab-paclitaxel
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.CarboplatinBasedRegimens">
+            <summary>
+            Carboplatin based regimens
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.IfophosphamideBasedRegimens">
+            <summary>
+            Ifophosphamide based regimens
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Bendamustine">
+            <summary>
+            Bendamustine
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Cladrabine">
+            <summary>
+            Cladrabine 
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Topotecan">
+            <summary>
+            Topotecan
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.CyclophosphamideSlashFludarabineCombinations">
+            <summary>
+            Cyclophosphamide/Fludarabine combinations
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Ice">
+            <summary>
+            ICE
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Gdp">
+            <summary>
+            GDP
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Dhap">
+            <summary>
+            DHAP
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Eshap">
+            <summary>
+            ESHAP
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Cvad">
+            <summary>
+            CVAD
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.DacarbazineBasedRegimens">
+            <summary>
+            Dacarbazine based regimens
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Lomustine">
+            <summary>
+            Lomustine
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Mogalizumab">
+            <summary>
+            Mogalizumab
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.BrentuximabVedotin">
+            <summary>
+            Brentuximab vedotin
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.AsparaginaseBasedRegimens">
+            <summary>
+            Asparaginase based regimens
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.AllALLSlashAMLRegimens">
+            <summary>
+            All ALL/AML regimens
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Bep">
+            <summary>
+            BEP
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.HighlyImmunosuppressiveChemotherapy" -->
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.TrifuradineSlashTipracil">
+            <summary>
+            Trifuradine/ Tipracil
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.Index">
+            <inheritdoc />
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.DisplayName">
+            <inheritdoc />
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.GetGroupFromTreatmentList(System.Collections.Generic.IEnumerable{QCovid.RiskCalculator.Risk.Input.ChemotherapyItem})">
+            <summary>
+            Get the corresponding Chemotherapy Group from a list of Chemotherapy Items taken in the last 12 months.
+            An empty list will return the NoneInLast12Months group.
+            </summary>
+            <param name="treatments"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.GetAllOptions">
+            <summary>
+            Get all available Chemotherapy Items in alphabetical order
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.ChemotherapyItem.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.ChronicKidneyDisease">
+            <summary>
+            A classification of Chronic Kidney Disease
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChronicKidneyDisease.None">
+            <summary>
+            No serious kidney disease
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChronicKidneyDisease.Ckd3">
+            <summary>
+            CKD3
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChronicKidneyDisease.Ckd4">
+            <summary>
+            CKD4
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChronicKidneyDisease.Ckd5WithNeitherDialysisNorTransplant">
+            <summary>
+            CKD5 without dialysis or transplant
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChronicKidneyDisease.Ckd5WithDialysis">
+            <summary>
+            CKD5 with dialysis in the last 12 months
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.ChronicKidneyDisease.Ckd5WithTransplant">
+            <summary>
+            CKD5 with transplant
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.ChronicKidneyDisease.GetAllOptions">
+            <summary>
+            Get all available Chronic Kidney Disease options in order of ascending severity
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.ChronicKidneyDisease.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.ClinicalInformation">
+            <summary>
+            A collection on inputs about various relevant diseases, conditions and treatments
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.ClinicalInformation.Diabetes">
+            <summary>
+            Do you have diabetes?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.ClinicalInformation.ChronicKidneyDisease">
+            <summary>
+            Do you have kidney disease?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.ClinicalInformation.SickleCellOrSevereCombinedImmunodeficiencySyndrome">
+            <summary>
+            Do you have sickle cell disease or severe combined immune deficiency syndromes?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.ClinicalInformation.SickleCellOrSevereCombinedImmunodeficiencySyndromeViaBool">
+            <summary>
+            This is a convenience that can be used in place of SickleCellOrSevereCombinedImmunodeficiencySyndrome since there are only two options for that
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.ClinicalInformation.LearningDisabilityOrDownsSyndrome">
+            <summary>
+            Do you have a learning disability or Down's Syndrome?
+            The most recently recorded value. If someone has a code both for learning disability and Downs, they should be coded as Downs.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.ClinicalInformation.CancerTreatmentsAndImmunoSuppressants">
+            <summary>
+            Have you had any cancer treatments or are you taking any immuno-suppressants?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.ClinicalInformation.RespiratoryProblems">
+            <summary>
+            Do you have any respiratory problems?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.ClinicalInformation.HeartOrCirculationProblems">
+            <summary>
+            Do you have any heart or circulation problems?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.ClinicalInformation.NeurologicalProblems">
+            <summary>
+            Do you have any neurological problems?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.ClinicalInformation.OtherConditions">
+            <summary>
+            Do you have any of these other conditions?
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.ClinicalInformation.#ctor(QCovid.RiskCalculator.Risk.Input.Diabetes,QCovid.RiskCalculator.Risk.Input.ChronicKidneyDisease,QCovid.RiskCalculator.Risk.Input.SickleCellOrSevereCombinedImmunodeficiencySyndrome,QCovid.RiskCalculator.Risk.Input.LearningDisabilityOrDownsSyndrome,QCovid.RiskCalculator.Risk.Input.CancerTreatmentsAndImmunoSuppressants,QCovid.RiskCalculator.Risk.Input.RespiratoryProblems,QCovid.RiskCalculator.Risk.Input.HeartOrCirculationProblems,QCovid.RiskCalculator.Risk.Input.NeurologicalProblems,QCovid.RiskCalculator.Risk.Input.OtherConditions)">
+            <summary>
+            
+            </summary>
+            <param name="diabetes"></param>
+            <param name="chronicKidneyDisease"></param>
+            <param name="sickleCellOrSevereCombinedImmunodeficiencySyndrome"></param>
+            <param name="learningDisabilityOrDownsSyndrome"></param>
+            <param name="cancerTreatmentsAndImmunoSuppressants"></param>
+            <param name="respiratoryProblems"></param>
+            <param name="heartOrCirculationProblems"></param>
+            <param name="neurologicalProblems"></param>
+            <param name="otherConditions"></param>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.Date">
+            <summary>
+            Holds a Date only, no time
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.Date.Value">
+            <summary>
+            This date as a standard <see cref="T:System.DateTime"/> instance
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Date.#ctor(System.DateTime)">
+            <summary>
+            Strips the time off a DateTime and records only the Date part of it
+            </summary>
+            <param name="dateTime"></param>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Date.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="year"></param>
+            <param name="month"></param>
+            <param name="day"></param>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Date.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Date.CompareTo(QCovid.RiskCalculator.Risk.Input.Date)">
+            <inheritdoc />
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.Date.Now">
+            <summary>
+            The current local date
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.Date.UtcNow">
+            <summary>
+            The current UTC date
+            </summary>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.Diabetes">
+            <summary>
+            Classifications of diabetes
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Diabetes.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Diabetes.Type1">
+            <summary>
+            Type 1
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Diabetes.Type2">
+            <summary>
+            Type 2
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Diabetes.GetAllOptions">
+            <summary>
+            Get all available Diabetes options in order of ascending severity
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Diabetes.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.Ethnicity">
+            <summary>
+            Classifications of Ethnicity
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.NotRecorded">
+            <summary>
+            Not recorded.
+            This option is only for bulk calculations from a patient database.
+            If performing a calculation for a single individual via a UI, this option should not be included.
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.WhiteBritish">
+            <summary>
+            White British
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.WhiteIrish">
+            <summary>
+            White Irish
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.OtherWhiteBackground">
+            <summary>
+            Other White background
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.WhiteAndBlackCaribbeanMixed">
+            <summary>
+            White and Black Caribbean mixed
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.WhiteAndBlackAfricanMixed">
+            <summary>
+            White and Black African mixed
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.WhiteAndAsianMixed">
+            <summary>
+            White and Asian mixed
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.OtherMixedOrMultiEthnic">
+            <summary>
+            Other mixed or multiple ethnic background
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.Indian">
+            <summary>
+            Indian
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.Pakistani">
+            <summary>
+            Pakistani
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.Bangladeshi">
+            <summary>
+            Bangladeshi
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.OtherAsian">
+            <summary>
+            Any other Asian background
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.Caribbean">
+            <summary>
+            Caribbean
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.BlackAfrican">
+            <summary>
+            Black African
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.OtherBlack">
+            <summary>
+            Any other Black/African/Caribbean
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.Chinese">
+            <summary>
+            Chinese
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.OtherEthnicGroupIncludingArab">
+            <summary>
+            Other ethnic group including Arab
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Ethnicity.NotStated">
+            <summary>
+            Ethnicity not stated
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.Ethnicity.Index">
+            <inheritdoc />
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.Ethnicity.DisplayName">
+            <inheritdoc />
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Ethnicity.GetAllOptions">
+            <summary>
+            Get all available Ethnicity options in a set order.
+            Excludes Not Recorded as it should not be shown on UIs.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Ethnicity.GetAllOptionsForBulkCalculation">
+            <summary>
+            Get all available Ethnicity options in a set order, including Not Recorded.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Ethnicity.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.HeartOrCirculationProblems">
+            <summary>
+            Inputs representing various heart or circulation problems
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.HeartOrCirculationProblems.CongenitalHeartProblem">
+            <summary>
+            Do you have congenital heart disease or have you had surgery for it in the past?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.HeartOrCirculationProblems.CoronaryHeartDisease">
+            <summary>
+            Do you have coronary heart disease? 
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.HeartOrCirculationProblems.StrokeOrTia">
+            <summary>
+            Have you had a stroke or TIA?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.HeartOrCirculationProblems.AtrialFibrillation">
+            <summary>
+            Do you have atrial fibrillation?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.HeartOrCirculationProblems.HeartFailure">
+            <summary>
+            Do you have heart failure?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.HeartOrCirculationProblems.PeripheralVascularDisease">
+            <summary>
+            Do you have peripheral vascular disease?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.HeartOrCirculationProblems.ThrombosisOrPulmonaryEmbolus">
+            <summary>
+            Have you had a thrombosis or pulmonary embolus? 
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.HeartOrCirculationProblems.#ctor(System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="congenitalHeartProblem"></param>
+            <param name="coronaryHeartDisease"></param>
+            <param name="strokeOrTia"></param>
+            <param name="atrialFibrillation"></param>
+            <param name="heartFailure"></param>
+            <param name="peripheralVascularDisease"></param>
+            <param name="thrombosisOrPulmonaryEmbolus"></param>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.HousingCategory">
+            <summary>
+            Classifications of a patient's current housing situations
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.HousingCategory.NeitherInNursingOrCareHomeNorHomeless">
+            <summary>
+            Neither
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.HousingCategory.NursingOrCareHome">
+            <summary>
+            Nursing or care home
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.HousingCategory.Homeless">
+            <summary>
+            Homeless
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.HousingCategory.GetAllOptions">
+            <summary>
+            Get all available housing categories in order of ascending severity
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.HousingCategory.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.IInputOption">
+            <summary>
+            An interface for an enum like input option
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.IInputOption.Index">
+            <summary>
+            An index number for this option.
+            Does not map to an internal representation or display sort order,
+            but is unique for this option type
+            and will remain consistent between versions.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.IInputOption.DisplayName">
+            <summary>
+            A human readable display name.
+            </summary>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.InputWithSeverity`1">
+            <summary>
+            An Input that can be ordered by severity
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.InputWithSeverity`1.Index">
+            <inheritdoc />
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.InputWithSeverity`1.DisplayName">
+            <inheritdoc />
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.InputWithSeverity`1.#ctor(System.Int32,System.Int32,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="severity"></param>
+            <param name="index"></param>
+            <param name="displayName"></param>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.InputWithSeverity`1.CompareTo(`0)">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.LearningDisabilityOrDownsSyndrome">
+            <summary>
+            A classification of Learning Disability
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.LearningDisabilityOrDownsSyndrome.Neither">
+            <summary>
+            Neither
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.LearningDisabilityOrDownsSyndrome.LearningDisabilityExcludingDowns">
+            <summary>
+            Learning disability excluding Downs Syndrome
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.LearningDisabilityOrDownsSyndrome.DownsSyndrome">
+            <summary>
+            Downs Syndrome
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.LearningDisabilityOrDownsSyndrome.GetAllOptions">
+            <summary>
+            Get all Learning Disability Or Downs Syndrome options in order of ascending severity
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.LearningDisabilityOrDownsSyndrome.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.NeurologicalProblems">
+            <summary>
+            Inputs representing various neurological problems
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.NeurologicalProblems.ParkinsonsDisease">
+            <summary>
+            Do you have Parkinson’s disease?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.NeurologicalProblems.Epilepsy">
+            <summary>
+            Do you have epilepsy?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.NeurologicalProblems.Dementia">
+            <summary>
+            Do you have dementia?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.NeurologicalProblems.MotorNeuroneDiseaseOrMultipleSclerosisOrMyaestheniaOrHuntingtonsChorea">
+            <summary>
+            Do you have motor neurone disease, multiple sclerosis, myaesthenia, or Huntington's Chorea?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.NeurologicalProblems.CerebralPalsy">
+            <summary>
+            Do you have cerebral palsy?
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.NeurologicalProblems.#ctor(System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="parkinsonsDisease"></param>
+            <param name="epilepsy"></param>
+            <param name="dementia"></param>
+            <param name="motorNeuroneDiseaseOrMultipleSclerosisOrMyaestheniaOrHuntingtonsChorea"></param>
+            <param name="cerebralPalsy"></param>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.OtherConditions">
+            <summary>
+            Inputs representing various conditions not covered otherwise
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.OtherConditions.SevereMentalIllness">
+            <summary>
+            Do you have severe mental illness?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.OtherConditions.LiverCirrhosis">
+            <summary>
+            Do you have cirrhosis of the liver?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.OtherConditions.RheumatoidArthritisOrSle">
+            <summary>
+            Do you have rheumatoid arthritis or SLE?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.OtherConditions.PriorFractureOfHipWristSpineHumerus">
+            <summary>
+            Have you had a prior fracture of hip, wrist, spine or humerus?
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.OtherConditions.#ctor(System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="severeMentalIllness"></param>
+            <param name="cirrhosisOfTheLiver"></param>
+            <param name="rheumatoidArthritisOrSle"></param>
+            <param name="priorFractureOfHipWristSpineHumerus"></param>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.RespiratoryProblems">
+            <summary>
+            Inputs representing various respiratory problems
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RespiratoryProblems.Asthma">
+            <summary>
+            Do you have asthma?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RespiratoryProblems.TakingAntiLeukotrieneOrLaba">
+            <summary>
+            Are you taking anti-leukotriene or long acting beta2-agonists (LABA)?
+            Prescribed four or more times in the previous 6 months.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RespiratoryProblems.CysticFibrosisBronchiectasisAlveolitis">
+            <summary>
+            Do you have cystic fibrosis or bronchiectasis or alveolitis?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RespiratoryProblems.PulmonaryHypertensionOrFibrosis">
+            <summary>
+            Do you have pulmonary hypertension or pulmonary fibrosis?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RespiratoryProblems.Copd">
+            <summary>
+            Do you have chronic obstructive pulmonary disease (COPD)?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RespiratoryProblems.LungOrOralCancer">
+            <summary>
+            Do you have lung or oral cancer?
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.RespiratoryProblems.#ctor(System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="asthma"></param>
+            <param name="takingAntiLeukotrieneOrLaba"></param>
+            <param name="cysticFibrosisBronchiectasisAlveolitis"></param>
+            <param name="pulmonaryHypertensionOrFibrosis"></param>
+            <param name="copd"></param>
+            <param name="lungOrOralCancer"></param>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.RiskInput">
+            <summary>
+            The input to <see cref="T:QCovid.RiskCalculator.Risk.QCovidRiskCalculator"/>
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RiskInput.Age">
+            <summary>
+            The age of the patient in years at the date of calculation.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RiskInput.Bmi">
+            <summary>
+            Body Mass Index.
+            The most recently recorded patient BMI within the last 5 years.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RiskInput.Sex">
+            <summary>
+            The sex of the patient.
+            This is usually biological sex at birth.
+            There is insufficient data to model those who are intersex or trans, or indeed what the long term effect of hormone treatment etc on COVID risk for those who are biologically reassigned.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RiskInput.EncryptedTownsendScore">
+            <summary>
+            The Townsend score for the patient's residence.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RiskInput.HousingCategory">
+            <summary>
+            What is your housing category - care home or homeless or neither?
+            The most recently recorded accommodation status recorded on GP record.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RiskInput.Ethnicity">
+            <summary>
+            What is your ethnic group?
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.RiskInput.ClinicalInformation">
+            <summary>
+            Clinical observations and medications
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.RiskInput.#ctor(QCovid.RiskCalculator.Risk.Input.Age,QCovid.RiskCalculator.BodyMassIndex.Bmi,QCovid.RiskCalculator.Risk.Input.Sex,QCovid.RiskCalculator.Townsend.EncryptedTownsendScore,QCovid.RiskCalculator.Risk.Input.HousingCategory,QCovid.RiskCalculator.Risk.Input.Ethnicity,QCovid.RiskCalculator.Risk.Input.ClinicalInformation)">
+            <summary>
+            
+            </summary>
+            <param name="age"></param>
+            <param name="bmi"></param>
+            <param name="sex"></param>
+            <param name="townsendScore"></param>
+            <param name="housingCategory"></param>
+            <param name="ethnicity"></param>
+            <param name="clinicalInformation"></param>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.Sex">
+            <summary>
+            A patient's biological sex
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Sex.Female">
+            <summary>
+            Female
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.Sex.Male">
+            <summary>
+            Male
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.Sex.Index">
+            <inheritdoc />
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Input.Sex.DisplayName">
+            <inheritdoc />
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Sex.GetAllOptions">
+            <summary>
+            Get all available Sex options
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.Sex.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Input.SickleCellOrSevereCombinedImmunodeficiencySyndrome">
+            <summary>
+            Whether a person has Sickle Cell Or Severe Combined Immunodeficiency Syndrome
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.SickleCellOrSevereCombinedImmunodeficiencySyndrome.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Risk.Input.SickleCellOrSevereCombinedImmunodeficiencySyndrome.Present">
+            <summary>
+            Present
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.SickleCellOrSevereCombinedImmunodeficiencySyndrome.GetAllOptions">
+            <summary>
+            Get all available Sickle Cell Or Severe Combined Immunodeficiency Syndrome options in order of ascending severity
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Input.SickleCellOrSevereCombinedImmunodeficiencySyndrome.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.IQCovidRiskCalculator">
+            <summary>
+            Calculates the QCovid risk report for the patient
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.IQCovidRiskCalculator.Calculate(QCovid.RiskCalculator.Risk.Input.RiskInput)">
+            <summary>
+            Performs the risk calculation and returns the result 
+            </summary>
+            <param name="inputs"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.QCovidRiskCalculator">
+            <summary>
+            Calculates the QCovid risk report for the patient
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.QCovidRiskCalculator.#ctor(System.String)">
+            <summary>
+            Construct a QCovidRiskCalculator with a provided licence key.
+            </summary>
+            <param name="licenceKey"></param>
+            <exception cref="T:QCovid.RiskCalculator.Exceptions.LicenceKeyException"></exception>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.QCovidRiskCalculator.Calculate(QCovid.RiskCalculator.Risk.Input.RiskInput)">
+            <summary>
+            Create a risk report for the given input
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Result.IRiskResult">
+            <summary>
+            A QCovid risk report
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Result.IRiskResult.ErrorCodes">
+            <summary>
+            A list of error codes associated with this result.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Result.IRiskResult.Input">
+            <summary>
+            The inputs supplied to the calculation method
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Result.IRiskResult.ResultForPatient">
+            <summary>
+            Results for the patient
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Result.IRiskResult.ResultForTypicalPersonSameAgeSex">
+            <summary>
+            Results for the a person with the same age and sex and the patient but without the risk factors
+            </summary>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Result.RiskResult">
+            <inheritdoc />
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Result.RiskResult.Input">
+            <summary>
+            The inputs supplied to the calculation method
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Result.RiskResult.ResultForPatient">
+            <summary>
+            Results for the patient
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Result.RiskResult.ResultForTypicalPersonSameAgeSex">
+            <summary>
+            Results for the a person with the same age and sex and the patient but without the risk factors
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Result.RiskResult.ErrorCodes">
+            <summary>
+            A list of error codes associated with this result.
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Result.RiskResult.#ctor(QCovid.RiskCalculator.Risk.Input.RiskInput,QCovid.RiskCalculator.Risk.Result.RiskResultForSubjectType,QCovid.RiskCalculator.Risk.Result.RiskResultForSubjectType,System.Collections.Generic.IEnumerable{QCovid.RiskCalculator.Exceptions.QCovidErrorCode})">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+            <param name="resultForPatient"></param>
+            <param name="resultForTypicalPersonSameAgeSex"></param>
+            <param name="errorCodes"></param>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Result.RiskResultForOutcomeType">
+            <summary>
+            The probability of outcome (e.g. catching COVID-19 and dying) during a 90 day period and the percentile ranking of that risk
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Result.RiskResultForOutcomeType.RiskPercentage">
+            <summary>
+            The probability of outcome (e.g. catching COVID-19 and dying) during a 90 day period.
+            This is expressed as a percentage (rather than as a fraction)
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Result.RiskResultForOutcomeType.Centile">
+            <summary>
+            The percentile ranking of the risk, i.e. if we put the whole population in a line, ranked according to their risk, 
+            and then divide this line into 100 equally sized groups, in which group does the subject lie. The highest risk is the 100th centile.
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Result.RiskResultForOutcomeType.#ctor(System.Double,System.Int32)">
+            <summary>
+            Construct the result from the risk percentage and the centile
+            </summary>
+            <param name="riskPercentage">See RiskPercentage</param>
+            <param name="centile">See Centile</param>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Result.RiskResultForOutcomeType.Equals(QCovid.RiskCalculator.Risk.Result.RiskResultForOutcomeType)">
+            <inheritdoc />
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Result.RiskResultForOutcomeType.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Result.RiskResultForOutcomeType.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Result.RiskResultForSubjectType">
+            <summary>
+            The risk results for a given subject
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Result.RiskResultForSubjectType.Death">
+            <summary>
+            Results for catching COVID-19 and dying as a result
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Result.RiskResultForSubjectType.Hospitalisation">
+            <summary>
+            Results for catching COVID-19 and being admitted into hospital as a result
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Result.RiskResultForSubjectType.#ctor(QCovid.RiskCalculator.Risk.Result.RiskResultForOutcomeType,QCovid.RiskCalculator.Risk.Result.RiskResultForOutcomeType)">
+            <summary>
+            
+            </summary>
+            <param name="death"></param>
+            <param name="hospitalisation"></param>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Result.RiskResultForSubjectType.Equals(QCovid.RiskCalculator.Risk.Result.RiskResultForSubjectType)">
+            <inheritdoc />
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Result.RiskResultForSubjectType.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Result.RiskResultForSubjectType.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Validation.IRiskInputValidation">
+            <summary>
+            Validation for <see cref="T:QCovid.RiskCalculator.Risk.Input.RiskInput"/>
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Validation.IRiskInputValidation.GetValidAgeRangeYears">
+            <summary>
+            Get the range of valid ages, in years
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Validation.IRiskInputValidation.GetValidDateOfBirthRange(QCovid.RiskCalculator.Risk.Input.Date)">
+            <summary>
+            Get the range of valid dates-of-birth, given the current time
+            </summary>
+            <param name="now"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Validation.IRiskInputValidation.GetValidBmiRange">
+            <summary>
+            Get the range of valid body mass indexes
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Validation.IRiskInputValidation.ValidateInputs(QCovid.RiskCalculator.Risk.Input.RiskInput)">
+            <summary>
+            Validate an instance of <see cref="T:QCovid.RiskCalculator.Risk.Input.RiskInput"/>
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Validation.RiskInputValidation">
+            <inheritdoc/>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Validation.RiskInputValidation.GetValidAgeRangeYears">
+            <inheritdoc/>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Validation.RiskInputValidation.GetValidDateOfBirthRange(QCovid.RiskCalculator.Risk.Input.Date)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Validation.RiskInputValidation.GetValidBmiRange">
+            <inheritdoc/>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Risk.Validation.RiskInputValidation.ValidateInputs(QCovid.RiskCalculator.Risk.Input.RiskInput)">
+            <inheritdoc/>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Risk.Validation.ValidationRange`1">
+            <summary>
+            A range of valid inputs of type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Validation.ValidationRange`1.MinimumInclusive">
+            <summary>
+            The minimum (or earliest) acceptable value
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Risk.Validation.ValidationRange`1.MaximumInclusive">
+            <summary>
+            The maximum (or latest) acceptable value
+            </summary>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Townsend.EncryptedTownsendScore">
+            <summary>
+            An encrypted version of the Townsend score, plus any error code present
+            from the lookup in the encrypted database.
+            For demonstration purposes, in the open source version this is a thin wrapper
+            around the score with no encryption provided.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Townsend.EncryptedTownsendScore.Value">
+            <summary>
+            The value of the encrypted score or null if the default score is to be used.
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Townsend.EncryptedTownsendScore.ErrorCode">
+            <summary>
+            An error code from generating the TownsendScore
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Townsend.EncryptedTownsendScore.#ctor(System.Double)">
+            <summary>
+            For the open source version, this constructor has been made public.
+            </summary>
+            <param name="unencryptedScore">An Townsend score, between -8.0 to 12.0</param>
+        </member>
+        <member name="F:QCovid.RiskCalculator.Townsend.EncryptedTownsendScore.Default">
+            <summary>
+            Use this instance to represent the default Townsend score
+            </summary>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Townsend.IPostcodeToTownsendScoreConverter">
+            <summary>
+            Takes a postcode and returns an encrypted Townsend score instance
+            based on the content of an encrypted database
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Townsend.IPostcodeToTownsendScoreConverter.GetTownsendScore(QCovid.RiskCalculator.Townsend.Postcode)">
+            <summary>
+            Takes a postcode and returns an encrypted Townsend score instance
+            based on the content of an encrypted database
+            </summary>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Townsend.ITownsendScoreDbReader">
+            <summary>
+            An alternative to a DbConnection pointing to the townsend database
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Townsend.ITownsendScoreDbReader.GetValueByKey(System.Byte[])">
+            <summary>
+            Looks up a value (the transformed Townsend score) by key (the postcode hash)
+            </summary>
+            <param name="key">The postcode hash</param>
+            <returns>The found value or null if not found</returns>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Townsend.Postcode">
+            <summary>
+            The patient's postcode
+            </summary>
+        </member>
+        <member name="P:QCovid.RiskCalculator.Townsend.Postcode.PostcodeString">
+            <summary>
+            The postcode, converted to all-caps with no white-space.
+            </summary>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Townsend.Postcode.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="postcodeString"></param>
+        </member>
+        <member name="T:QCovid.RiskCalculator.Townsend.PostcodeToTownsendScoreConverter">
+            <inheritdoc cref="T:QCovid.RiskCalculator.Townsend.IPostcodeToTownsendScoreConverter"/>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Townsend.PostcodeToTownsendScoreConverter.#ctor(System.String,System.Func{System.Data.Common.DbConnection})">
+            <summary>
+            Construct a PostcodeToTownsendScoreConverter with a provided licence key and a function to create a new database connection.
+            Will close created database connection on dispose.
+            </summary>
+            <param name="licenceKey"></param>
+            <param name="newConnectionFactoryFunc"></param>
+            <exception cref="T:QCovid.RiskCalculator.Exceptions.LicenceKeyException"></exception>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Townsend.PostcodeToTownsendScoreConverter.#ctor(System.String,System.Data.Common.DbConnection)">
+            <summary>
+            Construct a PostcodeToTownsendScoreConverter with a provided licence key and a pre-existing database connection.
+            Will not close database connection on dispose.
+            </summary>
+            <param name="licenceKey"></param>
+            <param name="dbConnection"></param>
+            <exception cref="T:QCovid.RiskCalculator.Exceptions.LicenceKeyException"></exception>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Townsend.PostcodeToTownsendScoreConverter.#ctor(System.String,QCovid.RiskCalculator.Townsend.ITownsendScoreDbReader)">
+            <summary>
+            Construct a QCovidRiskCalculator with a provided licence key and an ITownsendScoreDbReader instance
+            </summary>
+            <param name="licenceKey"></param>
+            <param name="townsendScoreDbReader"></param>
+            <exception cref="T:QCovid.RiskCalculator.Exceptions.LicenceKeyException"></exception>
+        </member>
+        <member name="M:QCovid.RiskCalculator.Townsend.PostcodeToTownsendScoreConverter.GetTownsendScore(QCovid.RiskCalculator.Townsend.Postcode)">
+            <inheritdoc />
+        </member>
+        <member name="M:QCovid.RiskCalculator.Townsend.PostcodeToTownsendScoreConverter.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:QCovid.RiskCalculator.VersionNumbers">
+            <summary>
+            The version numbers for QCovid
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.VersionNumbers.CoreVersion">
+            <summary>
+            The version of the QCovid algorithm
+            </summary>
+        </member>
+        <member name="F:QCovid.RiskCalculator.VersionNumbers.WrapperVersion">
+            <summary>
+            The version of the C# library
+            </summary>
+        </member>
+    </members>
+</doc>

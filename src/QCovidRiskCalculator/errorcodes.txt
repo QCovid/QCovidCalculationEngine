@@ -1,0 +1,25 @@
+﻿1xx - General
+    100 - fatal - An unhandled exception occurred.
+
+2xx - Input validation
+    201 - fatal - The provided age in years is below the calculators range.
+    202 - fatal - The provided age in years is above the calculators range.
+    204 - The provided BMI is below the calculators range. The minimum valid BMI will be used instead.
+    205 - The provided BMI is above the calculators range. The maximum valid BMI will be used instead.
+    206 - No BMI was provided. A BMI of 25 will be used.
+    207 - The provided BMI was not a number. A BMI of 25 will be used.
+    208 - fatal - One or more inputs is null.
+
+3xx - Postcode validation
+    300 - The provided postcode was not found. A Townsend score of 0 will be used.
+    301 - No postcode was provided. A Townsend score of 0 will be used.
+
+4xx - Townsend database errors
+    400 - fatal - Could not open a connection to the Townsend database.
+    401 - fatal - An error occurred while querying the Townsend database.
+    402 - fatal - The Townsend database did not pass the version check.
+
+5xx - Medical codes database errors
+    500 - fatal - Could not open a connection to the Medical code database.
+    501 - fatal - An error occurred while querying the Medical code database.
+    502 - fatal - The Medical code database did not pass the version check.
